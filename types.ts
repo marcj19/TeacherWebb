@@ -26,6 +26,10 @@ export interface AnalysisResult {
   suggestions: string[];
 }
 
+export interface AIService {
+  analyzeText(text: string, systemPrompt: string): Promise<AnalysisResult>;
+}
+
 export interface AppState {
   currentView: AppView;
   selectedMode: WritingMode | null;

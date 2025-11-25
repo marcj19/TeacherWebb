@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
-import { analyzeText } from '../services/geminiService';
-import { 
-  ChevronLeft, 
-  LayoutTemplate, 
-  Settings, 
-  Sparkles, 
-  Save, 
+import { AIServiceFactory } from '../services/aiServiceFactory';
+import {
+  ChevronLeft,
+  LayoutTemplate,
+  Settings,
+  Sparkles,
+  Save,
   Download,
   MoreHorizontal
 } from 'lucide-react';
@@ -23,8 +23,8 @@ const Workspace: React.FC = () => {
     if (!state.selectedMode || !state.documentContent.trim()) return;
 
     dispatch({ type: 'START_ANALYSIS' });
-    
-    const result = await analyzeText(
+
+    const result = await AIServiceFactory.getService().analyzeText(
       state.documentContent,
       state.selectedMode.systemPrompt
     );
@@ -35,12 +35,12 @@ const Workspace: React.FC = () => {
 
   return (
     <div className="flex h-full w-full overflow-hidden animate-in slide-in-from-right-10 duration-500">
-      
+
       {/* Sidebar - Finder Style */}
       <div className="w-16 md:w-64 bg-white/30 backdrop-blur-xl border-r border-white/20 flex flex-col justify-between py-6 flex-shrink-0 z-10">
         <div>
           <div className="px-6 mb-8 flex items-center space-x-2">
-            <button 
+            <button
               onClick={handleBack}
               className="p-2 -ml-2 rounded-lg hover:bg-black/5 text-gray-600 transition-colors flex items-center"
             >
@@ -48,7 +48,7 @@ const Workspace: React.FC = () => {
               <span className="hidden md:inline ml-1 font-medium text-sm">Voltar</span>
             </button>
           </div>
-          
+
           <div className="space-y-1 px-4">
             <div className="flex items-center px-3 py-2 bg-black/5 rounded-lg text-gray-800 cursor-default">
               <LayoutTemplate className="w-4 h-4 mr-3" />
@@ -71,7 +71,7 @@ const Workspace: React.FC = () => {
 
       {/* Main Editor Area */}
       <div className="flex-1 flex flex-col relative bg-white/10">
-        
+
         {/* Toolbar */}
         <div className="h-14 border-b border-white/20 flex items-center justify-between px-8 bg-white/20 backdrop-blur-sm">
           <div className="text-sm text-gray-500 font-medium">
@@ -81,7 +81,7 @@ const Workspace: React.FC = () => {
             <button className="p-2 text-gray-500 hover:text-gray-800 transition-colors">
               <Download className="w-4 h-4" />
             </button>
-            <button 
+            <button
               onClick={() => setShowInspector(!showInspector)}
               className={`p-2 transition-colors ${showInspector ? 'text-blue-600 bg-blue-100/50 rounded-md' : 'text-gray-500 hover:text-gray-800'}`}
             >
@@ -110,8 +110,8 @@ const Workspace: React.FC = () => {
             disabled={state.isAnalyzing || !state.documentContent}
             className={`
               flex items-center space-x-2 px-6 py-3 rounded-full shadow-lg backdrop-blur-md transition-all duration-300
-              ${state.isAnalyzing 
-                ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
+              ${state.isAnalyzing
+                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                 : 'bg-black/80 hover:bg-black text-white hover:shadow-xl hover:-translate-y-1'
               }
             `}
@@ -132,7 +132,7 @@ const Workspace: React.FC = () => {
       </div>
 
       {/* Inspector Panel */}
-      <div 
+      <div
         className={`
           w-80 bg-white/40 backdrop-blur-2xl border-l border-white/30 flex-shrink-0 transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] overflow-hidden flex flex-col
           ${showInspector ? 'mr-0 opacity-100' : '-mr-80 opacity-0'}
@@ -156,11 +156,11 @@ const Workspace: React.FC = () => {
           )}
 
           {state.isAnalyzing && (
-             <div className="space-y-4 animate-pulse">
-               <div className="h-4 bg-gray-300/50 rounded w-3/4"></div>
-               <div className="h-20 bg-gray-300/50 rounded"></div>
-               <div className="h-4 bg-gray-300/50 rounded w-1/2"></div>
-             </div>
+            <div className="space-y-4 animate-pulse">
+              <div className="h-4 bg-gray-300/50 rounded w-3/4"></div>
+              <div className="h-20 bg-gray-300/50 rounded"></div>
+              <div className="h-4 bg-gray-300/50 rounded w-1/2"></div>
+            </div>
           )}
 
           {state.analysisResult && !state.isAnalyzing && (
@@ -198,13 +198,13 @@ const Workspace: React.FC = () => {
               {/* Strengths */}
               <div>
                 <h4 className="text-sm font-semibold text-green-700 mb-2">Pontos Fortes</h4>
-                 <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2">
                   {state.analysisResult.strengths.map((str, i) => (
                     <span key={i} className="px-2 py-1 bg-green-100/50 text-green-800 text-xs rounded-md border border-green-200/50">
                       {str}
                     </span>
                   ))}
-                 </div>
+                </div>
               </div>
             </div>
           )}
