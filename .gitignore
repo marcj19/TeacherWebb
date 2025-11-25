@@ -1,4 +1,6 @@
-# Logs
+# ======================================
+# 1. Log files
+# ======================================
 logs
 *.log
 npm-debug.log*
@@ -7,18 +9,54 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
+# ======================================
+# 2. Dependency & build directories
+# ======================================
+node_modules/
+dist/
+dist-ssr/
+build/
+coverage/
+
+# ======================================
+# 3. Environment variables (VERY IMPORTANT)
+# ======================================
+.env
+.env.*
+!.env.example   # permite manter um template no repo
+!.env.sample
+
+# ======================================
+# 4. Local configs (dev only)
+# ======================================
 *.local
 
-# Editor directories and files
+# ======================================
+# 5. Editor settings
+# ======================================
 .vscode/*
-!.vscode/extensions.json
-.idea
+!.vscode/extensions.json   # permite versionar as recomendações
+.idea/
 .DS_Store
+
+# ======================================
+# 6. OS-generated files
+# ======================================
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# ======================================
+# 7. Docker
+# ======================================
+docker-data/
+*.pid
+
+# ======================================
+# 8. Temporary files
+# ======================================
+*.tmp
+*.temp
+*.cache/
